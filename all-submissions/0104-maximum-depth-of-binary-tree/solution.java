@@ -14,11 +14,7 @@ class Solution {
             return 0;
         else
         {
-        TreeNode current = root;
-        if(current.left == null && current.right == null)
-             return 1;
-        else 
-            return 1 + Math.max(maxDepth(current.left),maxDepth(current.right));
+            return 1 + Math.max(maxDepth(root.left),maxDepth(root.right));
         }
     }
 }
