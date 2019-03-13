@@ -3,36 +3,24 @@ class Solution {
         if(s=="")
             return true;
         Stack<Character> stack = new Stack<>();
-        for(int i=0;  i<s.length(); i++ )
+        for(int i =0; i<s.length(); i++)
         {
             char ch = s.charAt(i);
-            switch(ch)
+            if(ch == '(' || ch == '{'||ch == '[')
             {
-                case '{':
-                case '(':
-                case '[':
-                    {
-                    stack.push(ch);
-                    break;
-                    }
-                case '}':
-                case ']':
-                case ')':
-                    if(!stack.empty())
-                    {
-                        char c = stack.pop();
-                        if((ch =='}' && c!='{') || (ch ==']' && c!='[') ||(ch==')' && c!='(') )
-                            return false;
-                    }
-                    else
-                        return false;
-                default:
-                    break;
+                stack.push(ch);
+            }
+            else if(ch == ')'||ch =='}'||ch == ']')
+            {
+                if(stack.isEmpty())
+                    return false;
+                char c = stack.pop();
+                if(ch == ')' && c!='(' || ch == '}'&& c!='{' || ch == ']'&& c!='[')
+                    return false;
             }
         }
-        if(!stack.empty())
-            return false;
-        return true;
-        
+        if(stack.isEmpty())
+            return true;
+        return false;
     }
 }
