@@ -1,4 +1,5 @@
-class Solution {
+
+    class Solution {
     public int numIslands(char[][] grid) {
         int islands=0;
         for(int i =0; i< grid.length; i++)
@@ -27,3 +28,4 @@ class Solution {
         changetowater(grid,i+1,j);
     }
 }
+
