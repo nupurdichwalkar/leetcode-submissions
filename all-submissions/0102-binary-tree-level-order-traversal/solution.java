@@ -17,7 +17,7 @@ class Solution {
         TreeNode cur;
         while (!q.isEmpty()) {
             int size = q.size();
-            List<Integer> subAns = new LinkedList<Integer>();
+            List<Integer> subAns = new ArrayList<Integer>();
             for (int i = 0; i < size; ++i) {        // traverse nodes in the same level
                 cur = q.poll();
                 subAns.add(cur.val);                // visit the root
