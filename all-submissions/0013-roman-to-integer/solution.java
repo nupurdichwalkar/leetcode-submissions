@@ -1,7 +1,6 @@
 class Solution {
     public int romanToInt(String s) {
         HashMap<Character,Integer> RomanTable = new HashMap<Character,Integer>();
-        //HashMap<String,Integer> SubTable = new HashMap<String,Integer>();
         int sum = 0, temp =0;
         RomanTable.put('I',1);
         RomanTable.put('V',5);
