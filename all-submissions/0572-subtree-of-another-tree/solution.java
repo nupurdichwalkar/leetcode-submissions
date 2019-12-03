@@ -9,18 +9,29 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode s, TreeNode t) {
-        return getNode(s,t);
-    }
-    public boolean checker(TreeNode a, TreeNode b)  
-    { 
-        if (a == null && b == null) 
+        if(s == null && t == null){
             return true;
-        if (a == null || b == null) 
+        }
+        if(s == null || t == null){
             return false;
-        return a.val == b.val && checker(a.left, b.left) && checker(a.right, b.right); 
+        }
+        
+        boolean a = util(s, t);
+        boolean b = isSubtree(s.left, t);
+        boolean c = isSubtree(s.right, t);
+        return a || b || c;
     }
-    public boolean getNode(TreeNode s, TreeNode t)
-    {
-        return s!=null && (checker(s,t) || getNode(s.left,t) || getNode(s.right,t));
+    
+    private boolean util(TreeNode s, TreeNode t){
+        // both absent
+        if(s == null && t == null){
+            return true;
+        }
+        // one of them is absent
+        if(s == null || t == null){
+            return false;
+        }
+        return s.val == t.val && util(s.left, t.left) && util(s.right, t.right);
     }
+
 }
