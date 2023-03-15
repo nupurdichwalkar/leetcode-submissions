@@ -3,24 +3,23 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        if(head==null)
-            return null;
-        ListNode temp = head;
         ListNode curr = head;
         ListNode prev = null;
-        while(curr!=null)
-        {
-            curr = temp.next;
-            temp.next = prev;
-            prev = temp;
-            temp = curr;
+
+        while(curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
         }
-        head=prev;
-        return head;
+        return prev;
+
     }
 }
