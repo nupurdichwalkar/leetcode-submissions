@@ -3,28 +3,26 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0);
-        ListNode prev = dummy;
+        ListNode prev = new ListNode();
         prev.next = head;
-        ListNode p1 = head;
-        ListNode p2 = head;
-        while(n>1)
-        {
-            p2 = p2.next;
-            n--;
+        ListNode curr = prev;
+        ListNode runner = prev;
+        for (int i =1 ; i <= n+1; i++){
+            runner = runner.next;
         }
-        while(p2.next!=null)
-        {
-            p1=p1.next;
-            p2=p2.next;
-            prev = prev.next;
+        while (runner!= null) {
+            curr = curr.next;
+            runner = runner.next;
         }
-        prev.next = p1.next;
-        return dummy.next;
+
+        curr.next = curr.next.next;
+        return prev.next;
     }
 }
