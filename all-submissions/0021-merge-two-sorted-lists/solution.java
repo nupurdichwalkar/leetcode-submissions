@@ -3,37 +3,34 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode curr_result= new ListNode(-1);
-        ListNode result = curr_result;
-        while((l1 !=null) && (l2 !=null))
-        {
-            
-            if(l1.val <= l2.val )
-            {
-                curr_result.next = l1;
-                l1 = l1.next;
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+        ListNode list3 = new ListNode();
+        ListNode prev = list3;
+        while (list1 != null && list2 != null){
+            if (list1.val <= list2.val) {
+                prev.next = list1;
+                list1 = list1.next;
+            } 
+            else {
+                prev.next = list2;
+                list2 = list2.next;
             }
-            else
-            {
-                curr_result.next = l2;
-                l2 = l2.next;
-            }
-            curr_result = curr_result.next;
-                
+            prev = prev.next;
         }
-            if(l1==null)
-            {
-               curr_result.next = l2;
-            }
-            else if(l2==null)
-            {
-               curr_result.next = l1;
-            }
-        return result.next;
+        if (list1 == null) {
+            prev.next = list2;
+        }
+        if (list2 == null) {
+           prev.next = list1;
+        }
+        return list3.next;
     }
 }
