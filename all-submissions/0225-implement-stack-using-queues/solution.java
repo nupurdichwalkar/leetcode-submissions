@@ -1,35 +1,53 @@
 class MyStack {
-    Queue<Integer> q1 = new LinkedList<>();
-    //Queue<Integer> q2;
-    //int last;
-    /** Initialize your data structure here. */
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
+
     public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
         
     }
     
-    /** Push element x onto stack. */
     public void push(int x) {
-        q1.offer(x);
-        
-        for(int i = 1; i< q1.size(); i++)
-            q1.offer(q1.poll());
+        q1.add(x);
         
     }
     
-    /** Removes the element on top of the stack and returns that element. */
     public int pop() {
-         return q1.poll();
+        int size = q1.size();
+        while (size > 1) {
+            int x = q1.remove();
+            q2.add(x);
+            size --;
+        } 
+
+        int ans = q1.remove();
+        while (!q2.isEmpty()) {
+            int x = q2.remove();
+            q1.add(x);
+        } 
+        return ans;
     }
     
-    /** Get the top element. */
     public int top() {
-        return q1.peek();
+        int size = q1.size();
+        while (size > 1) {
+            int x = q1.remove();
+            q2.add(x);
+            size --;
+        } 
+        int ans = q1.peek();
+        int x = q1.remove();
+        q2.add(x);
+        while (!q2.isEmpty()) {
+            int y = q2.remove();
+            q1.add(y);
+        } 
+        return ans;
     }
     
-    /** Returns whether the stack is empty. */
     public boolean empty() {
-        if(q1.isEmpty()) return true;
-        return false;
+        return q1.isEmpty();
     }
 }
 
