@@ -4,18 +4,27 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
-import java.util.*; 
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-      List<Integer> a = new ArrayList<Integer>();
-      if(root==null)
-            return a;
-          a.addAll(inorderTraversal(root.left));
-          a.add(root.val);
-          a.addAll(inorderTraversal(root.right));
-          return a;
+        List<Integer> result = new ArrayList<>();
+        helper(result, root);
+        return result;
+    }
+
+    private void helper(List<Integer> result, TreeNode root) {
+        if (root != null) {
+            helper(result, root.left);
+            result.add(root.val);
+            helper(result, root.right);
+        }
     }
 }
