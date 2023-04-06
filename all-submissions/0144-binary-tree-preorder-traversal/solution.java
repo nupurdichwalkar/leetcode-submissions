@@ -4,20 +4,27 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
-        if(root==null)
-        {
-            return list;
+        List<Integer> result = new ArrayList<>();
+        helper(result, root);
+        return result;
+    }
+
+    private void helper(List<Integer> result, TreeNode root) {
+        if(root != null) {
+            result.add(root.val);
+            helper(result, root.left);
+            helper(result, root.right);
         }
-        list.add(root.val);
-        list.addAll(preorderTraversal(root.left));   
-        list.addAll(preorderTraversal(root.right));
-        return list;
-        
     }
 }
