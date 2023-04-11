@@ -1,31 +1,33 @@
+class Solution {
 
-    class Solution {
+    private void dfs(char[][] grid, int row, int col, int rowLength, int colLength) {
+        if (row < 0 || col < 0 || row >= rowLength || col >= colLength || grid[row][col] == '0') {
+            return;
+        }
+        grid[row][col] = '0';
+        dfs(grid, row-1, col, rowLength, colLength);
+        dfs(grid, row+1, col, rowLength, colLength);
+        dfs(grid, row, col-1, rowLength, colLength);
+        dfs(grid, row, col+1, rowLength, colLength);
+
+    }
+
     public int numIslands(char[][] grid) {
-        int islands=0;
-        for(int i =0; i< grid.length; i++)
-        {
-            for(int j =0; j<grid[0].length;j++)
-            {
-                if(grid[i][j]=='1')
-                {
-                    islands++;
-                    changetowater(grid,i,j);
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        int rowLength = grid.length;
+        int colLength = grid[0].length;
+        int islandCount = 0;
+        for (int i = 0; i< rowLength; i++) {
+            for (int j = 0; j< colLength; j++) {
+                if (grid[i][j] == '1') {
+                    islandCount++;
+                    dfs(grid, i, j, rowLength, colLength);
                 }
             }
         }
-        return islands;
-    }
-    public void changetowater(char[][] grid, int i, int j)
-    {
-        if(i<0||j<0|| i>=grid.length|| j>=grid[0].length||grid[i][j]=='0')
-            return;
-        
-        grid[i][j] = '0';
-        
-        changetowater(grid,i,j-1);
-        changetowater(grid,i,j+1);
-        changetowater(grid,i-1,j);
-        changetowater(grid,i+1,j);
+        return islandCount;
+
     }
 }
-
