@@ -1,19 +1,13 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-        int tortoise = nums[0];
-        int hare = nums[0];
-        do {
-            tortoise = nums[tortoise];
-            hare = nums[nums[hare]];
-        } while (tortoise != hare);
-
-        int ptr1 = nums[0];
-        int ptr2 = tortoise;
-        while (ptr1 != ptr2) {
-            ptr1 = nums[ptr1];
-            ptr2 = nums[ptr2];
+        int[] isPresent = new int[nums.length];
+        Arrays.fill(isPresent, 0);
+        for(int i =0 ; i< nums.length; i++) {
+            if (isPresent[nums[i]-1] == 1) {
+                return nums[i];
+            }
+            isPresent[nums[i]-1] = 1;
         }
-
-        return ptr1;
+        return -1;
     }
 }
