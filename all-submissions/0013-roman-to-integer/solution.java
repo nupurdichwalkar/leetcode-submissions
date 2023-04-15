@@ -1,25 +1,38 @@
 class Solution {
     public int romanToInt(String s) {
-        HashMap<Character,Integer> RomanTable = new HashMap<Character,Integer>();
-        int sum = 0, temp =0;
-        RomanTable.put('I',1);
-        RomanTable.put('V',5);
-        RomanTable.put('X',10);
-        RomanTable.put('L',50);
-        RomanTable.put('C',100);
-        RomanTable.put('D',500);
-        RomanTable.put('M',1000);
-        for (int i=0;i<s.length();i++)
-        {
-            if((i!=s.length()-1)&&(RomanTable.get(s.charAt(i+1))>RomanTable.get(s.charAt(i))))
-            {
-                temp = RomanTable.get(s.charAt(i+1)) - RomanTable.get(s.charAt(i));
-                i++;
+        int count  = 0;
+        Map<Character, Integer> romanToIntMap = new HashMap<>();
+        romanToIntMap.put('I', 1);
+        romanToIntMap.put('V', 5);
+        romanToIntMap.put('X', 10);
+        romanToIntMap.put('L', 50);
+        romanToIntMap.put('C', 100);
+        romanToIntMap.put('D', 500);
+        romanToIntMap.put('M', 1000);
+
+        char[] charArray = s.toCharArray();
+        for(int i=0; i<charArray.length; i++) {
+            if (i != charArray.length-1) {
+                if (charArray[i] == 'I' && (charArray[i+1] == 'V' || charArray[i+1] == 'X' ) ) {
+                    count += romanToIntMap.get(charArray[i+1]) - romanToIntMap.get(charArray[i]);
+                    i++;
+                    continue;
+                }
+                if (charArray[i] == 'X' && (charArray[i+1] == 'L' || charArray[i+1] == 'C' ) ) {
+                    count += romanToIntMap.get(charArray[i+1]) - romanToIntMap.get(charArray[i]);
+                    i++;
+                    continue;
+                }
+                if (charArray[i] == 'C' && (charArray[i+1] == 'D' || charArray[i+1] == 'M' ) ) {
+                    count += romanToIntMap.get(charArray[i+1]) - romanToIntMap.get(charArray[i]);
+                    i++;
+                    continue;
+                }
             }
-            else
-                temp = RomanTable.get(s.charAt(i));
-            sum = sum + temp;
+            count += romanToIntMap.get(charArray[i]);
         }
-        return sum;
+
+        return count;
+        
     }
 }
