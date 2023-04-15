@@ -62,46 +62,34 @@
 
 class TicTacToe {
     int n;
-    int[] p1Row, p2Row;
-    int[] p1Col, p2Col;
-    int p1D, p2D, p1AD, p2AD;
+    int[] pRow;
+    int[] pCol;
+    int pD, pAD;
 
     TicTacToe(int n) {
         this.n = n;
-        p1Row = new int[n];
-        p2Row = new int[n];
-        p1Col = new int[n];
-        p2Col = new int[n];
+        pRow = new int[n];
+        pCol = new int[n];
     }
 
     public int move(int row, int col, int player) {
-        if (player == 1) {
-            p1Row[row]++;
-            p1Col[col]++;
-            if (row == col) {
-                p1D ++;
-            }
-            if(row == n-col-1) {
-                p1AD ++;
-            }
-            if (p1Row[row] == n || p1Col[col] == n || p1D ==n || p1AD == n) {
-                return player;
-            }
-        } else {
-            p2Row[row]++;
-            p2Col[col]++;
-            if (row == col) {
-                p2D ++;
-            }
-            if(row == n-col-1) {
-                p2AD ++;
-            }
-            if (p2Row[row] == n || p2Col[col] == n|| p2D==n || p2AD==n) {
-                return player;
-            }
+        //can track row,col,pd,pad each with ONLY one variable for both player 1 and player 2
+        //(sum of n => player 1 wins) 
+        //(sum of -n => player 2 wins)
+        int incr = player==1 ? 1 : -1;
+        
+        pRow[row]+=incr;
+        pCol[col]+=incr;
+        if (row == col) {
+            pD += incr;
         }
+        if(row == n-col-1) {
+            pAD += incr;
+        }
+        if (Math.abs(pRow[row]) == n || Math.abs(pCol[col]) == n || Math.abs(pD) ==n || Math.abs(pAD) == n) {
+            return player;
+        }        
         return 0;
-
     }
 }
 
