@@ -1,30 +1,25 @@
-import java.util.*;
 class Solution {
-    public List<Integer> topKFrequent(int[] nums, int k) {
-        List<Integer> a = new ArrayList<Integer>();
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for(int i = 0;i<nums.length;i++)
-        {
-            map.put(nums[i],0);
+    public int[] topKFrequent(int[] nums, int k) {
+        if (k == nums.length) {
+            return nums;
         }
-        for(int i = 0;i<nums.length;i++)
-        {
-            map.put(nums[i],map.get(nums[i]) + 1);
+
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int i=0; i< nums.length; i++) {
+            frequencyMap.put(nums[i], frequencyMap.getOrDefault(nums[i], 0) +1);
         }
-        for(int j = 0; j<k;j++)
-        {
-        int max =(Collections.max(map.values()));
-        a.add(getKey(map, max));
-        map.remove(getKey(map, max));
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> frequencyMap.get(n1) - frequencyMap.get(n2));
+
+        for(int key: frequencyMap.keySet()) {
+            heap.add(key);
+            if (heap.size() > k) heap.remove();
         }
-        return a;
-    }
-    public static <K, V> K getKey(Map<K, V> map, V value) {
-		for (K key : map.keySet()) {
-			if (value.equals(map.get(key))) {
-				return key;
-			}
-		}
-		return null;
+        int[] topK = new int[k];
+        for(int i=0; i<k;i++){
+            topK[i] = heap.remove();
+        }
+        return topK;
+
     }
 }
