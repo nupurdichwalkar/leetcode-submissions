@@ -1,21 +1,26 @@
 class MovingAverage {
-    double sum;
-    Queue<Integer> q= new LinkedList<>(); 
     int size;
-    /** Initialize your data structure here. */
+    Queue<Integer> queue;
+    int sum;
+
     public MovingAverage(int size) {
-        sum = 0;
+        queue = new LinkedList<>();
         this.size = size;
     }
     
     public double next(int val) {
-            if(q.size()==size)
-            {
-                sum -= q.poll();
-            } 
-        sum += val;
-        q.offer(val);
-        return sum/q.size();
+        if (queue.size() < size) {
+            sum+=val;
+            queue.add(val);
+            return (double)sum/queue.size();
+        }
+        if (queue.size() == size) {
+            sum = sum + val - queue.poll();
+            queue.add(val);
+            return (double)sum/queue.size();
+        }
+        return (double)sum/queue.size();
+        
     }
 }
 
