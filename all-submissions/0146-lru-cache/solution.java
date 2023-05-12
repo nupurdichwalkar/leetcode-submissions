@@ -1,114 +1,27 @@
-
-class LRUCache {
+class LRUCache extends LinkedHashMap<Integer, Integer>{
+    private int capacity;
     
-    private class DNode {
-      int key;
-      int value;
-      DNode prev;
-      DNode next;
-    }
-
-    private Map<Integer, DNode> hashtable = new HashMap<Integer, DNode>();
-    private DNode head, tail;
-    private int totalItemsInCache;
-    private int maxCapacity;
-
-    public LRUCache(int maxCapacity) {
-
-      totalItemsInCache = 0;
-      this.maxCapacity = maxCapacity;
-
-     
-      head = new DNode();
-      head.prev = null;
-
-      
-      tail = new DNode();
-      tail.next = null;
-
-      
-      head.next = tail;
-      tail.prev = head;
+    public LRUCache(int capacity) {
+        super(capacity, 0.75F, true);
+        this.capacity = capacity;
     }
 
     public int get(int key) {
-
-      DNode node = hashtable.get(key);
-      boolean itemFoundInCache = node != null;
-
-      
-      if(!itemFoundInCache){
-        return -1;
-      }
-
-      
-      moveToHead(node);
-
-      return node.value;
+        return super.getOrDefault(key, -1);
     }
 
     public void put(int key, int value) {
-
-      DNode node = hashtable.get(key);
-      boolean itemFoundInCache = node != null;
-
-      if(!itemFoundInCache){
-
-        DNode newNode = new DNode();
-        newNode.key = key;
-        newNode.value = value;
-
-        hashtable.put(key, newNode);
-        addNode(newNode);
-
-        totalItemsInCache++;
-
-        if(totalItemsInCache > maxCapacity){
-          removeLRUEntryFromStructure();
-        }
-
-      } else {
-        node.value = value;
-        moveToHead(node);
-      }
-
+        super.put(key, value);
     }
 
-    private void removeLRUEntryFromStructure() {
-      DNode tail = popTail();
-      hashtable.remove(tail.key);
-      --totalItemsInCache;
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity; 
     }
-
-    private void addNode(DNode node){
-
-      node.prev = head;
-      node.next = head.next;
-
-      head.next.prev = node;
-
-      head.next = node;
-    }
-
-    private void removeNode(DNode node){
-
-      DNode savedPrev = node.prev;
-      DNode savedNext = node.next;
-
-      savedPrev.next = savedNext;
-
-      savedNext.prev = savedPrev;
-    }
-    private void moveToHead(DNode node){
-      removeNode(node);
-      addNode(node);
-    }
-
-    private DNode popTail(){
-      DNode itemBeingRemoved = tail.prev;
-      removeNode(itemBeingRemoved);
-      return itemBeingRemoved;
-    }
-
 }
-
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
