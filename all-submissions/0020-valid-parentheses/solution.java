@@ -1,27 +1,33 @@
 class Solution {
     public boolean isValid(String s) {
-        if(s.length()==0||s ==null)
-            return true;
-        Stack<Character> stack = new Stack<>();
-        for(int i = 0 ; i<s.length();i++)
-        {
-            if(s.charAt(i)=='('||s.charAt(i)=='{'||s.charAt(i)=='['){
-                stack.push(s.charAt(i));
-            }
-            if(s.charAt(i)==')'||s.charAt(i)=='}'||s.charAt(i)==']'){
-                if(stack.isEmpty())
+        if (s == null) return false;
+        if (s.length() % 2 == 1) return false;
+
+        Stack<Character> st = new Stack<>();
+        for (char c: s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                st.push(c);
+            } 
+            if (c == ')' || c == '}' || c == ']') {
+                if (st.empty()) {
                     return false;
-                char ch = stack.pop();
-                if(ch =='('&& s.charAt(i)!=')')
+                }
+                char t = st.pop();
+                if (c == ')' && t != '(') {
                     return false;
-                if(ch =='{'&& s.charAt(i)!='}')
+                }
+                if (c == '}' && t != '{') {
                     return false;
-                if(ch =='['&& s.charAt(i)!=']')
+                }
+                if (c == ']' && t != '[') {
                     return false;
+                }
             }
         }
-        if(!stack.isEmpty())
-            return false;
-        return true;
+        if (st.empty())
+         return true; 
+        return false;
     }
+    
+
 }
