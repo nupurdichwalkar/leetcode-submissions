@@ -4,24 +4,38 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-    int sum;
-    public int rangeSumBST(TreeNode root, int L, int R) {
-      traverse(root,L,R);
-        return sum;
-    }
-    public void traverse(TreeNode root, int L, int R){
-          if(root==null)
+
+    List<Integer> sortedList = new ArrayList<>();
+
+    private void dfs(TreeNode root) {
+        if (root == null) {
             return;
-        if(root.val >=L && root.val<=R){
-            sum += root.val; 
         }
-        if(root.val<R)
-        traverse(root.right,L,R);
-        if(root.val>L)
-        traverse(root.left,L,R);
+
+        dfs(root.left);
+        sortedList.add(root.val);
+        dfs(root.right);
+    }
+
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        dfs(root);
+        int sum =0;
+        for(int value: sortedList) {
+            if (value >= low && value <= high) {
+                sum += value;
+            }
+        }
+        return sum;
+
     }
 }
