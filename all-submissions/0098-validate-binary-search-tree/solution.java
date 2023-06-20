@@ -4,24 +4,34 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-     public boolean isValidBST(TreeNode root) {
-    Stack<TreeNode> stack = new Stack();
-   TreeNode pre = null;
+    List<Integer> nodesList = new ArrayList<>();
 
-    while (!stack.isEmpty() || root != null) {
-      while (root != null) {
-        stack.push(root);
-        root = root.left;
-      }
-      root = stack.pop();
-      if (pre!=null && root.val <= pre.val) return false;
-      pre = root;
-      root = root.right;
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return false;
+        dfs(root);
+        for (int i = 0; i< nodesList.size()-1; i++) {
+            if (nodesList.get(i) >= nodesList.get(i+1)) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
+
+    public void dfs(TreeNode root) {
+        if (root == null) 
+            return;
+        dfs(root.left);
+        nodesList.add(root.val);
+        dfs(root.right);
     }
 }
