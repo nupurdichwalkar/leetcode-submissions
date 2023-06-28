@@ -1,50 +1,40 @@
-class UnionFind{
-    private int[] parent;
-    private int connectedComp;
-    
-    public UnionFind(int n){
-        parent = new int[n];
-        for(int i =0; i<n;i++){
-            parent[i]=i;
-        }
-    }
-    
-    public int find(int x){
-        if(parent[x]==x)
-            return x;
-       return parent[x] = find(parent[x]);
-    }
-    
-    public void union(int a, int b){
-        int groupA = find(a);
-        int groupB = find(b);
-        if(groupA!=groupB){
-            parent[groupA]=groupB;
-            connectedComp--;
-        }
-    }
-    
-    public void setConnectedComp(int n){
-        this.connectedComp = n;
-    }
-    public int getConnectedComp(){
-        return this.connectedComp;
-    }
-    
-}
-
 class Solution {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    Set<Integer> seen = new HashSet<>();
+    int componentCount = 0;
+
     public int countComponents(int n, int[][] edges) {
-        if(n==0)
-            return 0;
-        if(edges.length==0||edges[0].length==0)
-            return n;
-        UnionFind comp = new UnionFind(n);
-        int r = edges.length;
-        comp.setConnectedComp(n);
-        for(int i=0; i<r;i++){
-            comp.union(edges[i][0], edges[i][1]);
+        //build a graph
+        for(int[] edge:edges) {
+            int x = edge[0];
+            int y = edge[1];
+            if (!graph.containsKey(x)){
+                graph.put(x, new ArrayList<>());
+            }
+            if (!graph.containsKey(y)){
+                graph.put(y, new ArrayList<>());
+            }
+            graph.get(x).add(y);
+            graph.get(y).add(x);
         }
-        return comp.getConnectedComp();
+
+        for(int i = 0; i<n ;i++) {
+            if(!seen.contains(i)){
+                componentCount++;
+                dfs(i);
+            }  
+        }
+        return componentCount;
+    }
+
+    private void dfs(int node){
+        if(graph.containsKey(node)){
+            for(int neighbor: graph.get(node)) {
+                if (!seen.contains(neighbor)){
+                    seen.add(neighbor);
+                    dfs(neighbor);
+                }
+            }
+        }
     }
 }
