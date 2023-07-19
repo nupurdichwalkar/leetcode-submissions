@@ -1,42 +1,16 @@
 class Solution {
-    public boolean isPalindrome(String s) {
-        if(s.length() == 0)
-            return true;
-        s = s.toLowerCase();
-        int start = 0; 
-        int end = s.length()-1;
-        
-        while(start<end)
-        {
-             
-            if(!(isValid(s.charAt(start))))
-            {
-                start++;
-                continue;
+      public boolean isPalindrome(String s) {
+        for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
+            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
+                i++;
             }
-            if(!(isValid(s.charAt(end))))
-            {
-                end--;
-                continue;
+            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
+                j--;
             }
-               
-           // System.out.println(start+","+ end );
-            if(s.charAt(start) == s.charAt(end))
-            {
-               // System.out.println(s.charAt(start)+","+s.charAt(end));
-                start++;
-                end--;
-            }
-            else
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j)))
                 return false;
         }
+
         return true;
     }
-    public boolean isValid(char c)
-               {
-                   if((c>='a'&& c<='z')||(c>='0'&& c<='9'))
-                       return true;
-                   
-                   return false;
-               }
 }
