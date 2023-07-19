@@ -15,8 +15,8 @@ class KthLargest {
         while(heap.size() > k) {
             heap.remove();
         }
-        int ans = heap.remove();
-        heap.add(ans);
+        int ans = heap.peek();
+        // heap.add(ans);
         return ans;
     }
 }
