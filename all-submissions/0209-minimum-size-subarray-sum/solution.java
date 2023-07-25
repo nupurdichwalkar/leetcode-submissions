@@ -2,7 +2,7 @@ class Solution {
     public int minSubArrayLen(int target, int[] nums) {
         int left = 0;
         int right = 0;
-        int minSubArray = Integer.MAX_VALUE;
+        int minSubArray = nums.length+1;
         int currSum = 0;
         while(right < nums.length) {
             currSum += nums[right];
@@ -12,7 +12,7 @@ class Solution {
             }
             right++;
         }
-        return minSubArray == Integer.MAX_VALUE ? 0 : minSubArray;
+        return minSubArray > nums.length ? 0 : minSubArray;
         
     }
 }
