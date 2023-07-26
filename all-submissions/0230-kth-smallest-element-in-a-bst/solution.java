@@ -4,24 +4,31 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
+
+
 class Solution {
+    List<Integer> arrList = new ArrayList<>();
     public int kthSmallest(TreeNode root, int k) {
-        Stack<TreeNode> stack = new Stack<>();
-        while(!stack.empty()||root!=null)
-        {
-            while(root!=null)
-            {
-                stack.push(root);
-                root = root.left;
-            }
-            root = stack.pop();
-            if(--k == 0)
-                return root.val;
-            root = root.right;
+        dfs(root);
+        return arrList.get(k-1);
+    }
+
+    public void dfs(TreeNode node){
+        if (node == null) {
+            return;
         }
-        return -1;
+        dfs(node.left);
+        arrList.add(node.val);
+        dfs(node.right);
+
     }
 }
