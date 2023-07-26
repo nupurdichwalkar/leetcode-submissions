@@ -1,34 +1,35 @@
 class Solution {
-    public int myAtoi(String str) {
-        String s = str.trim();
-        double res = 0;
-        double sign = 1;
-        int i = 0;
-        if(s.length() == 0)
-            return 0;
-        if(!Character.isDigit(s.charAt(i)) && s.charAt(i) != '-' && s.charAt(i)!= '+' )
-        {
-            return 0;
-        }
-        if(s.charAt(i) == '-' || s.charAt(i) == '+' )
-            {
-                if(s.charAt(i) == '-')
-                    sign = -1;
-                i++;
+    public int myAtoi(String s) {
+        int answer = 0;
+        int sign = 1;
+        int numStart = 0;
+        for(int i=0; i<s.length();i++) {
+            if (s.charAt(i) != ' ') {
+                numStart = i;
+                break;
             }
-        while(i<s.length() && Character.isDigit(s.charAt(i)))
-        {
-            if(s.charAt(i) ==' ')
-                return 0;
-            res = res*10 + s.charAt(i)-'0';
-            i++;
-        } 
-        double ans = res*sign;
-        if(ans<Integer.MIN_VALUE)
-            return Integer.MIN_VALUE;
-        if(ans>Integer.MAX_VALUE)
-            return Integer.MAX_VALUE;
-        
-        return (int)(res*sign);
+        }
+        if (numStart == s.length()) { return answer;}
+        if (!Character.isDigit(s.charAt(numStart)) && s.charAt(numStart) != '-' && s.charAt(numStart) != '+') {
+            return answer;
+        }
+        if(!Character.isDigit(s.charAt(numStart))){
+            if (s.charAt(numStart) == '-'){
+                sign = -1;
+            } 
+            numStart++;
+        }
+        for(int i=numStart; i<s.length(); i++){
+            if (!Character.isDigit(s.charAt(i))){
+                return answer*sign;
+            }
+            if (answer > Integer.MAX_VALUE/10 || (answer == Integer.MAX_VALUE/10 && (s.charAt(i) - '0') > Integer.MAX_VALUE%10)) {
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+            answer = answer*10+(s.charAt(i) - '0');
+        }
+        return answer * sign;
+
+
     }
 }
