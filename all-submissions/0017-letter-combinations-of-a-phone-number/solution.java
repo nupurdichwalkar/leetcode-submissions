@@ -1,26 +1,28 @@
 class Solution {
-    private static final String[] KEYS = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
-    
+    private List<String> combinations = new ArrayList<>();
+    private Map<Character, String> letters = Map.of(
+        '2', "abc", '3', "def", '4', "ghi", '5', "jkl", 
+        '6', "mno", '7', "pqrs", '8', "tuv", '9', "wxyz");
+
     public List<String> letterCombinations(String digits) {
-        List<String> result = new ArrayList<String>();
-        if(digits == null || digits.length() == 0) 
-            return result;
-        helper(result,digits,0,"");
-        return result;
+        if(digits.length() == 0) {
+            return combinations;
+        }
+        backtrack(0 , digits, new StringBuilder());
+        return combinations;
     }
-    
-    public void helper(List<String> result, String digits, int pos, String str)
-    {
-        
-        if(pos>=digits.length()){
-            result.add(str);
+
+    public void backtrack(int index, String digits, StringBuilder combination){
+        if(digits.length() == combination.length()){
+            combinations.add(combination.toString());
             return;
         }
-        
-        String letters = KEYS[digits.charAt(pos)-'0'];
-        for(int i = 0; i<letters.length();i++){
-            helper(result,digits,pos+1,str+letters.charAt(i));
+        System.out.print( " " + index);
+        String possibleLetters = letters.get(digits.charAt(index));
+        for(char letter: possibleLetters.toCharArray()){
+            combination.append(letter);
+            backtrack(index+1, digits, combination);
+            combination.deleteCharAt(combination.length()-1);
         }
-        
     }
 }
