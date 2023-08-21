@@ -9,19 +9,19 @@
  */
 class Solution {
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-    Stack<TreeNode> stack = new Stack();
-    TreeNode pre = null;
-
-    while (!stack.isEmpty() || root != null) {
-      while (root != null) {
-        stack.push(root);
-        root = root.left;
-      }
-      root = stack.pop();
-      if (pre!=null && pre.val == p.val) return root;
-      pre = root;
-      root = root.right;
-    }
-    return null;
+        
+        TreeNode successor = null;
+        
+        while (root != null) {
+            
+            if (p.val >= root.val) {
+                root = root.right;
+            } else {
+                successor = root;
+                root = root.left;
+            }
+        }
+        
+        return successor;
     }
 }
