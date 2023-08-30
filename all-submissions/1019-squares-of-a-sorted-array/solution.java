@@ -1,38 +1,41 @@
 class Solution {
     public int[] sortedSquares(int[] nums) {
-        int len = nums.length;
-        int[] ans = new int[len];        
-        int firstPositiveIndex = len-1;
-        for (int i =0; i<len; i++) {
-            if(nums[i] >=0) {
-                firstPositiveIndex = i;
-                break;
-            }
+        int left = 0,right = 0,i=0;
+        int[] result = new int[nums.length];
+        
+        if (nums.length == 1) {
+            result[0] = nums[0] * nums[0];
+            return result;
         }
-        int j = firstPositiveIndex;
-        int k = firstPositiveIndex-1;
-        int i=0;
-        while(j<len && k>-1) {
-            int sq1 = nums[j]*nums[j];
-            int sq2 = nums[k]*nums[k];
-            if(sq1 < sq2) {
-                ans[i++] = sq1;
-                j++;
-            }
-            else {
-                ans[i++] = sq2;
-                k--;
-            } 
+        
+        while(i < nums.length && nums[i++] < 0) {
+            right++;
         }
-        while(k>-1){
-            ans[i++] = nums[k]*nums[k];
-            k--;
+        
+        if (right > 0) {
+            left = right - 1;    
         }
-        while (j<len){
-            ans[i++] = nums[j]*nums[j];
-            j++;
+        
+        int j = 0;
+        while(left >= 0 && right < nums.length && left!=right) {
+            if((nums[left] * nums[left]) <= (nums[right] * nums[right])) {
+                result[j++] = nums[left] * nums[left];
+                left--;
+            } else {
+                result[j++] = nums[right] * nums[right];
+                right++;
+            }    
         }
-        return ans;
+        while (left >= 0 && nums[left] < 0) {
+            result[j++] = nums[left] * nums[left];
+            left--;
+        }
+        while (right < nums.length) {
+            System.out.println("right=" + right + ",j=" + j);
+            result[j++] = nums[right] * nums[right];
+            right++;
+        } 
+        return result;
         
     }
 }
