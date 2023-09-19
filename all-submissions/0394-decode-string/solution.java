@@ -1,40 +1,42 @@
 class Solution {
     public String decodeString(String s) {
-        Stack<Integer> counts = new Stack();
-        Stack<String> character = new Stack();
-        int index = 0;
-        String res = "";
-        while(index< s.length()){
-            if(Character.isDigit(s.charAt(index))){
-                int count = 0;
-                while(Character.isDigit(s.charAt(index))){
-                    count = 10 * count +(s.charAt(index)-'0');
-                    index++;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ']') {
+                List<Character> decodedString = new ArrayList<>();
+                // get the encoded string
+                while (stack.peek() != '[') {
+                    decodedString.add(stack.pop());
                 }
-                counts.push(count);
-                
-            } else if(s.charAt(index)=='[') {
-                character.push(res);
-                res = "";
-                index++;
-                
-            } else if(s.charAt(index)==']') {
-                StringBuilder temp = new StringBuilder();
-                temp.append(character.pop());
-                int count = counts.pop();
-                while(count>0)
-                {
-                    temp.append(res);
-                    count--;
+                // pop [ from the stack
+                stack.pop();
+                int base = 1;
+                int k = 0;
+                // get the number k
+                while (!stack.isEmpty() && Character.isDigit(stack.peek())) {
+                    k = k + (stack.pop() - '0') * base;
+                    base *= 10;
                 }
-                res = temp.toString();
-                index++;
-                
-            } else {
-                res += s.charAt(index);
-                index++;
+                // decode k[decodedString], by pushing decodedString k times into stack
+                while (k != 0) {
+                    for (int j = decodedString.size() - 1; j >= 0; j--) {
+                        stack.push(decodedString.get(j));
+                    }
+                    k--;
+                }
             }
+            // push the current character to stack
+            else {
+                stack.push(s.charAt(i));
+            }
+        }      
+        // get the result from stack
+        char[] result = new char[stack.size()];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = stack.pop();
         }
-        return res;
+        return new String(result);
     }
 }
+
+
