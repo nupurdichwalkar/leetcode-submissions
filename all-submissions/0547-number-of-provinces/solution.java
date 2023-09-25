@@ -1,52 +1,45 @@
-class UnionFind{
-    private int[] parent;
-    private int circleCount;
-    
-    public UnionFind(int n){
-        parent = new int[n];
-        for(int i =0; i<n;i++){
-            parent[i]=i;
-        }
-    }
-    
-    public int find(int x){
-        if(parent[x]==x)
-            return x;
-       return parent[x] = find(parent[x]);
-    }
-    
-    public void union(int a, int b){
-        int groupA = find(a);
-        int groupB = find(b);
-        if(groupA!=groupB){
-            parent[groupA]=groupB;
-            circleCount--;
-        }
-    }
-    
-    public void setCircleCount(int n){
-        this.circleCount = n;
-    }
-    public int getCircleCount(){
-        return this.circleCount;
-    }
-    
-}
-
-
 class Solution {
-    public int findCircleNum(int[][] M) {
-        if(M==null ||M.length==0 ||M[0].length == 0)
-            return 0;
-        int n = M.length;
-        UnionFind friends = new UnionFind(n);
-        friends.setCircleCount(n);
-        for(int i=0;i<n;i++){
-                    for(int j=0;j<n;j++){
-                        if(M[i][j]==1&&i!=j)
-                            friends.union(i,j);
+
+    boolean[] seen;
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+
+    public int findCircleNum(int[][] isConnected) {
+        int rowLen = isConnected.length;
+        int colLen = isConnected[0].length;
+        // build the graph
+        for(int i = 0; i< rowLen; i++) {
+            for(int j = 0; j < colLen; j++) {
+                if (isConnected[i][j] == 1) {
+                    if (!graph.containsKey(i)) {
+                        graph.put(i , new ArrayList<>());
                     }
+                    if(!graph.containsKey(j)) {
+                        graph.put(j , new ArrayList<>());
+                    }
+                    graph.get(i).add(j);
+                    graph.get(j).add(i);
+                }
+            }
         }
-        return friends.getCircleCount();
+        seen = new boolean[rowLen];
+        int answer = 0;
+        for(int i = 0; i< graph.size(); i++) {
+            if (!seen[i]) {
+                answer++;
+                seen[i] = true;
+                dfs(i);
+            }
+        }
+        return answer;
+    }
+
+
+    public void dfs(int node) {
+        for( int neighbor: graph.get(node)){
+            if (!seen[neighbor]){
+                seen[neighbor] = true;
+                dfs(neighbor);
+            }
+        }
     }
 }
