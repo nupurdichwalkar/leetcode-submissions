@@ -7,13 +7,13 @@ class Solution {
             rightSum += nums[i];
         }
         while(index<nums.length && leftSum != rightSum){
-            leftSum += nums[index]; 
-            if (index == nums.length -1) {
+            index++;
+            leftSum += nums[index-1]; 
+            if (index == nums.length) {
                 rightSum = 0;
             } else {
-                rightSum -= nums[index+1];
+                rightSum -= nums[index];
             }
-            index++;
             
         }
         return index == nums.length ? -1 : index;
