@@ -1,13 +1,21 @@
 class Solution {
+
+    Map<Integer, Integer> memo = new HashMap<>();
+
     public int minCostClimbingStairs(int[] cost) {
-        int[] mincost = new int[cost.length+1];
-        mincost[0] = cost[0];
-        mincost[1] = cost[1];
-        for(int i = 2; i < mincost.length; i++)
-        {
-            int price = (i==cost.length) ? 0 : cost[i];
-            mincost[i] = Math.min(mincost[i-1] + price, mincost[i-2] + price);
+
+        return dp(cost.length, cost);
+
+        
+    }
+
+    private int dp(int i, int[] cost) {
+        if (i == 0) return 0;
+        if(i == 1) return 0;
+        if (memo.containsKey(i)) {
+            return memo.get(i);
         }
-        return mincost[cost.length];
+        memo.put(i, Math.min(dp(i-1, cost)+ cost[i-1], dp(i-2, cost) + cost[i-2]));
+        return memo.get(i);
     }
 }
