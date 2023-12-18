@@ -1,41 +1,23 @@
 class Solution {
     public int[] sortedSquares(int[] nums) {
-        int left = 0,right = 0,i=0;
-        int[] result = new int[nums.length];
+        int [] result = new int[nums.length];
+        int ansPointer = result.length - 1;
+        int i = 0;
+        int j = nums.length-1;
         
-        if (nums.length == 1) {
-            result[0] = nums[0] * nums[0];
-            return result;
-        }
-        
-        while(i < nums.length && nums[i++] < 0) {
-            right++;
-        }
-        
-        if (right > 0) {
-            left = right - 1;    
-        }
-        
-        int j = 0;
-        while(left >= 0 && right < nums.length && left!=right) {
-            if((nums[left] * nums[left]) <= (nums[right] * nums[right])) {
-                result[j++] = nums[left] * nums[left];
-                left--;
+        while(i<j) {
+            if(nums[i]*nums[i]<nums[j]*nums[j]) {
+                result[ansPointer] = nums[j]*nums[j];
+                j--;
             } else {
-                result[j++] = nums[right] * nums[right];
-                right++;
-            }    
+                result[ansPointer] = nums[i]*nums[i];
+                i++;
+            }
+            ansPointer--;
         }
-        while (left >= 0 && nums[left] < 0) {
-            result[j++] = nums[left] * nums[left];
-            left--;
+        if(i==j) {
+            result[ansPointer] = nums[i]*nums[i];
         }
-        while (right < nums.length) {
-            System.out.println("right=" + right + ",j=" + j);
-            result[j++] = nums[right] * nums[right];
-            right++;
-        } 
-        return result;
-        
+       return result;
     }
 }
