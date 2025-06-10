@@ -1,19 +1,18 @@
 class Solution {
     public int waysToSplitArray(int[] nums) {
-        long[] prefixSum = new long[nums.length];
-        prefixSum[0] = nums[0];
-        for (int i=1; i< nums.length;i++) {
-            prefixSum[i] = prefixSum[i-1] + nums[i];
+        int answer = 0;
+        long prefix[] = new long[nums.length];
+        prefix[0] = nums[0];
+        for(int i=1;i<nums.length; i++) {
+            prefix[i] = prefix[i-1] + nums[i];
         }
-        int validSplit = 0;
-        for(int i = 0;i<nums.length-1; i++) {
-            long leftSum = prefixSum[i];
-            long rightSum = prefixSum[nums.length-1] - leftSum;
-            if(leftSum >= rightSum) {
-                validSplit++;
+        for (int j=0;j<nums.length-1; j++){
+            long sumLeft = prefix[j];
+            long sumRight = prefix[nums.length-1] - prefix[j];
+            if (sumLeft >=sumRight) {
+                answer++;
             }
         }
-        return validSplit;
-        
+        return answer;
     }
 }
