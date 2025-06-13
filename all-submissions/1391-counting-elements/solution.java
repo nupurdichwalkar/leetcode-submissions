@@ -1,12 +1,12 @@
 class Solution {
     public int countElements(int[] arr) {
-        Set<Integer> mySet = new HashSet<>();
-        for (int num: arr) {
-            mySet.add(num);
-        }
         int answer = 0;
-        for(int num: arr) {
-            if (mySet.contains(num+1)) {
+        Set<Integer> set = new HashSet<>();
+        for (int i=0; i< arr.length; i++) {
+            set.add(arr[i]);
+        }
+        for(int i=0; i<arr.length; i++) {
+            if (set.contains(arr[i] +1)) {
                 answer++;
             }
         }
