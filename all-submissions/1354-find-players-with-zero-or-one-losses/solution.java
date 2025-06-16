@@ -1,30 +1,25 @@
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
-        Map<Integer, Integer> lostMap = new HashMap<>();
-        for (int[] match: matches){
-            lostMap.put(match[0], lostMap.getOrDefault(match[0],0));
-            lostMap.put(match[1], lostMap.getOrDefault(match[1],0) + 1);   
+        List<List<Integer>> answer = new ArrayList<>();
+        List<Integer> answer0 = new ArrayList<>();
+        List<Integer> answer1 = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i=0; i<matches.length; i++) {
+            map.put(matches[i][1], map.getOrDefault(matches[i][1], 0) + 1);
+            map.put(matches[i][0], map.getOrDefault(matches[i][0],0));
         }
-        List<Integer> zeroLoses = new ArrayList<>();
-        List<Integer> oneLoss = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> player: lostMap.entrySet()) {
-            int key = player.getKey();
-            int value = player.getValue();
-            if (value == 0) {
-                zeroLoses.add(key);
+        for (Map.Entry<Integer, Integer> entry: map.entrySet()){
+            if (entry.getValue() == 0) {
+                answer0.add(entry.getKey());
             }
-            if(value == 1) {
-                oneLoss.add(key);
+            if (entry.getValue() == 1) {
+                answer1.add(entry.getKey());
             }
         }
-        Collections.sort(zeroLoses);
-        Collections.sort(oneLoss);
-        return new ArrayList<List<Integer>>() {
-            {
-                add(zeroLoses);
-                add(oneLoss);
-            }
-        };
-        
+        Collections.sort(answer0);
+        Collections.sort(answer1);
+        answer.add(answer0);
+        answer.add(answer1);
+        return answer;
     }
 }
