@@ -1,34 +1,37 @@
 class Solution {
     Map<Integer, List<Integer>> graph = new HashMap<>();
     Set<Integer> seen = new HashSet<>();
-    
-    
+
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        for (int i = 0; i< n; i++){
-            graph.put(i, new ArrayList<>());
-        }
-        
-        for (int[] edge: edges){
-            int x = edge[0];
-            int y = edge[1];
+        if (edges.length == 0) return true;
+        // build a graph
+        for (int i =0; i< edges.length;i++) {
+            int x = edges[i][0]; int y = edges[i][1];
+            if (!graph.containsKey(x)) {
+                graph.put(x, new ArrayList<>());
+            }
             graph.get(x).add(y);
+            if(!graph.containsKey(y)) {
+                graph.put(y, new ArrayList<>());
+            }
             graph.get(y).add(x);
         }
-        
         seen.add(source);
-        dfs(source);
-        if (seen.contains(destination)) {
+        return dfs(source, destination);
+    }
+
+    public boolean dfs(int source, int destination) {
+        if(source == destination) {
             return true;
         }
-        return false;
-    }
-    
-    private void dfs(int node) {
-        for(int neighbor: graph.get(node)) {
-            if(!seen.contains(neighbor)) { 
+        for (int neighbor: graph.get(source)){
+            if(!seen.contains(neighbor)){
                 seen.add(neighbor);
-                dfs(neighbor);
+                if (dfs(neighbor, destination)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 }
