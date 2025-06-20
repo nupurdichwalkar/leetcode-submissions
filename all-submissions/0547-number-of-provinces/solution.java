@@ -1,42 +1,42 @@
 class Solution {
-
-    boolean[] seen;
     Map<Integer, List<Integer>> graph = new HashMap<>();
+    boolean[] seen;
 
     public int findCircleNum(int[][] isConnected) {
-        int rowLen = isConnected.length;
-        int colLen = isConnected[0].length;
         // build the graph
-        for(int i = 0; i< rowLen; i++) {
-            for(int j = 0; j < colLen; j++) {
+        int n = isConnected.length;
+        for (int i = 0; i < n; i++) {
+            if (!graph.containsKey(i)) {
+                graph.put(i, new ArrayList<>());
+            }
+            for (int j = i + 1; j < n; j++) {
+                if (!graph.containsKey(j)) {
+                    graph.put(j, new ArrayList<>());
+                }
                 if (isConnected[i][j] == 1) {
-                    if (!graph.containsKey(i)) {
-                        graph.put(i , new ArrayList<>());
-                    }
-                    if(!graph.containsKey(j)) {
-                        graph.put(j , new ArrayList<>());
-                    }
                     graph.get(i).add(j);
                     graph.get(j).add(i);
                 }
             }
         }
-        seen = new boolean[rowLen];
-        int answer = 0;
-        for(int i = 0; i< graph.size(); i++) {
+
+        seen = new boolean[n];
+        int ans = 0;        
+        for (int i = 0; i < n; i++) {
             if (!seen[i]) {
-                answer++;
+                // add all nodes of a connected component to the set
+                ans++;
                 seen[i] = true;
                 dfs(i);
             }
         }
-        return answer;
+        
+        return ans;
     }
-
-
+    
     public void dfs(int node) {
-        for( int neighbor: graph.get(node)){
-            if (!seen[neighbor]){
+        for (int neighbor: graph.get(node)) {
+            if (!seen[neighbor]) {
                 seen[neighbor] = true;
                 dfs(neighbor);
             }
