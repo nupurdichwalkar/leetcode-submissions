@@ -2,22 +2,22 @@ class Solution {
     Set<Integer> seen = new HashSet<>();
 
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        boolean canVisitAllRooms = false;
-        int noOfRooms = rooms.size();
         seen.add(0);
-        dfs(0, rooms, noOfRooms);
-        if (seen.size() == noOfRooms) {
+        dfs(0, rooms);
+        if (seen.size() == rooms.size()) {
             return true;
         }
         return false;
     }
 
-    private void dfs(int keyNo, List<List<Integer>> rooms, int noOfRooms) {
-        for(int key: rooms.get(keyNo)) {
-            if (!seen.contains(key)) {
-                seen.add(key);
-                dfs(key, rooms, noOfRooms);
+    public void dfs (int room_num, List<List<Integer>> rooms) {
+        for (int room : rooms.get(room_num)) {
+            if (!seen.contains(room)) {
+                seen.add(room);
+                dfs(room, rooms);
             }
         }
     }
+
+
 }
