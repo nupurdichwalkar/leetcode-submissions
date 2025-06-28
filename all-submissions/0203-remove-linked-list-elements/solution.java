@@ -3,30 +3,26 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode removeElements(ListNode head, int val) {
-        if(head == null || head.val == val && head.next == null )
-            return null;
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
+        
+        if(head == null) return null;
+        ListNode sentinelNode = new ListNode(0, head);
         ListNode curr = head;
-        ListNode prev = dummy;
-        while(curr!=null)
-        {
-            if(curr.val == val)
-            {
+        ListNode prev = sentinelNode;
+        while(curr!=null) {
+            if(curr.val == val) {
                 prev.next = curr.next;
-                curr = curr.next;
-            }
-            else
-            {
+            } else {
                 prev = curr;
-                curr = curr.next;
             }
+            curr = curr.next;
         }
-        return dummy.next;  
+        return sentinelNode.next;   
     }
 }
