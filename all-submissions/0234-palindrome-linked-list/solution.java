@@ -3,48 +3,31 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-    if (head == null || head.next == null) {
-        return true;
-    }
-    ListNode mid = findMiddle(head);
-    ListNode second = mid.next;
-    mid.next = null;
-    second = reverse(second);
-    while (head != null && second != null) {
-        if (head.val != second.val) {
-            return false;
+        ListNode prev = null;
+        ListNode curr = head;
+        List<Integer> arr = new ArrayList<>();
+        while(curr!=null){
+            arr.add(curr.val);
+            ListNode nextNode = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextNode;
         }
-        head = head.next;
-        second = second.next;
+        int i = 0;
+        while (prev != null) { 
+            System.out.println(prev.val + " " + i + " " + arr.get(i));
+            if(prev.val != arr.get(i)){ return false;}
+            prev = prev.next;
+            i++;
+        }
+        return true;
+        
     }
-    return true;
-}
-private ListNode findMiddle (ListNode head) {
-    ListNode slow = head;
-    ListNode fast = head;
-    while (fast.next != null && fast.next.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-    }
-    return slow;
-}
-private ListNode reverse (ListNode head) {
-    if (head == null || head.next == null) {
-         return head;
-    }
-    ListNode prev = null;
-    ListNode curr = head;
-    while (curr != null) {
-        ListNode next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-    }
-    return prev;
-}
 }
