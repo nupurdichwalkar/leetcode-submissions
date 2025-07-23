@@ -1,56 +1,75 @@
-class LRUCache extends LinkedHashMap<Integer, Integer> {
+class ListNode {
+    int key;
+    int value;
+    ListNode next;
+    ListNode prev;
 
-    private int capacity;
-
-    public LRUCache(int capacity) {
-        super(capacity, 0.75F, true);
-        this.capacity = capacity;
+    ListNode(int key, int value) {
+        this.key= key;
+        this.value = value;
     }
-
-    public int get(int key){
-        return super.getOrDefault(key, -1);
-    }
-
-    public void put(int key, int value) {
-        super.put(key, value);
-    }
-
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest){
-        return size() > capacity;
-    }
-
 }
 
 
+class LRUCache {
+    int capacity;
+    Map<Integer, ListNode> dict;
+    ListNode head;
+    ListNode tail;
 
 
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        dict = new HashMap<>();
+        head = new ListNode(-1, -1);
+        tail = new ListNode(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+        
+    }
 
-
-
-
-
-// class LRUCache extends LinkedHashMap<Integer, Integer>{
-//     private int capacity;
+    public void add(ListNode node) {
+        ListNode previousEnd = tail.prev;
+        previousEnd.next = node;
+        node.prev = previousEnd;
+        node.next = tail;
+        tail.prev = node;
+    }
     
-//     public LRUCache(int capacity) {
-//         super(capacity, 0.75F, true);
-//         this.capacity = capacity;
-//     }
+    public void remove(ListNode node) {
+        node.prev.next= node.next;
+        node.next.prev = node.prev;
+    }
 
-//     public int get(int key) {
-//         return super.getOrDefault(key, -1);
-//     }
+    public int get(int key) {
+        if(!dict.containsKey(key)) {
+            return -1;
+        }
+        ListNode node = dict.get(key);
+        remove(node);
+        add(node);
 
-//     public void put(int key, int value) {
-//         super.put(key, value);
-//     }
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        if(dict.containsKey(key)) {
+            ListNode nodetoUpdate = dict.get(key);
+            remove(nodetoUpdate);
+        }
+        ListNode node = new ListNode(key, value);
+        add(node);
+        dict.put(key, node);
 
-//     @Override
-//     protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-//         return size() > capacity; 
-//     }
-// }
+        if(dict.size() > capacity) {
+            ListNode nodeToDelete = head.next;
+            remove(nodeToDelete);
+            dict.remove(nodeToDelete.key);
+        }
+        
+    }
+}
+
 /**
  * Your LRUCache object will be instantiated and called as such:
  * LRUCache obj = new LRUCache(capacity);
