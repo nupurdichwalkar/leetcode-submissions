@@ -1,17 +1,28 @@
 class Solution {
     public int lastStoneWeight(int[] stones) {
-        PriorityQueue<Integer> heap = new PriorityQueue<>(Comparator.reverseOrder());
-        for (int stone: stones) {
-            heap.add(stone);
+        if(stones.length == 1) return stones[0];
+        if(stones.length == 2) return Math.abs(stones[0]-stones[1]);
+
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
+        for(int i =0;i<stones.length;i++){
+            queue.add(stones[i]);
         }
-        while(heap.size()>1){
-            int first = heap.remove();
-            int second = heap.remove();
-            if (first != second) {
-                heap.add(first-second);
+
+        while(queue.size() > 1) {
+            int highest = queue.poll();
+            int secondHighest = queue.poll();
+            if(secondHighest == highest) {
+                continue;
+            } else {
+                int diff = highest - secondHighest;
+                queue.add(diff);
             }
         }
-        if (heap.size() == 0) return 0;
-        return heap.remove();
+        if(queue.size() == 0) {
+            return 0;
+        } 
+        return queue.poll();
+
+        
     }
 }
