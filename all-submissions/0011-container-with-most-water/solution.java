@@ -7,9 +7,7 @@ class Solution {
 
         while (i < j) {
             currArea = (j-i) * Math.min(height[i], height[j]);
-            if (currArea > maxArea) {
-                maxArea = currArea;
-            }
+            maxArea = Math.max(maxArea, currArea);
             if (height[i] < height[j]) {
                 i++;
             }
