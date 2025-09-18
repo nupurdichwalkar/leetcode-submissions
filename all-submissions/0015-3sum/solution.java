@@ -1,31 +1,29 @@
-class Solution {
+public class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList();
-        int l=0,r=0,sum=0;
+        List<List<Integer>> answer = new ArrayList<>();
         Arrays.sort(nums);
-        for(int i=0; i<nums.length-1;i++){
-            l=i+1;
-            r= nums.length-1;
-            while(l<r){
-                sum = nums[i]+nums[l]+nums[r];
-                if(sum==0){
-                 result.add(Arrays.asList(nums[i],nums[l],nums[r]));     
-                 l++;
-                 r--;
-                 while(l<r && nums[l]==nums[l-1]) l++;
-                 while(l<r && nums[r]==nums[r+1]) r--;
+        for(int i=0; i<nums.length-1;i++) {
+            int j = i+1;
+            int k = nums.length-1;
+            while(j<k) {
+                int tripletSum = nums[i] + nums[j] + nums[k];
+                if (tripletSum == 0) {
+                    answer.add(new ArrayList<>(Arrays.asList( nums[i],nums[j],nums[k])));
+                    j++;
+                    k--;
+                    while(j<k && nums[j] == nums[j-1]) j++;
+                    while(j<k && nums[k] == nums[k+1]) k--;
+                } else {
+                    if(tripletSum > 0){
+                        k--;
+                    } else {
+                        j++;
+                    }
                 }
-                else if(sum<0){
-                    l++;
-                }
-                else
-                    r--;
-            }            
-            while (i + 1 < nums.length && nums[i + 1] == nums[i]) 
-            i++;
+            }
+            while (i + 1 < nums.length && nums[i + 1] == nums[i]) i++;
         }
-        
-        
-        return result;
+        return answer;
+        // Your code goes here
     }
 }
