@@ -1,18 +1,12 @@
 class Solution {
-    Map<Integer, Long> memo = new HashMap<>();
-
     public long mostPoints(int[][] questions) {
-        return dp(0, questions);
-    }
+        long[] dp = new long[questions.length+1];
 
-    public long dp(int i, int[][]questions) {
-        if(memo.containsKey(i)) {
-            return memo.get(i);
+        for(int i= questions.length-1; i>=0;i--) {
+            int j = i+questions[i][1]+1;
+            dp[i] = Math.max(questions[i][0] + dp[Math.min(j, questions.length)], dp[i + 1]);
         }
-        if(i>=questions.length) return 0; 
-        
-        int j = i + questions[i][1] + 1;
-        memo.put(i, Math.max(questions[i][0] + dp(j, questions), dp(i+1, questions)));
-        return memo.get(i);
+
+        return dp[0];
     }
 }
