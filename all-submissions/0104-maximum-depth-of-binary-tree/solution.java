@@ -25,9 +25,7 @@ class Solution {
         if (node == null) {
             return 0;
         }
-        int answer = Math.max(dfs(node.left)+1, dfs(node.right)+1);
-        return answer;
-
+        return Math.max(dfs(node.left)+1, dfs(node.right)+1);
 
     }
 }
