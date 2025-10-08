@@ -1,18 +1,19 @@
 class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, 1);
-        int answer = 1;
-        for(int i=0; i<nums.length; i++) {
-            for(int j=0; j<i;j++) {
-                if(nums[j] < nums[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] +1);
-                    answer = Math.max(answer, dp[j] + 1);
-                }
-            }
-            
-        }
-        return answer;
 
-    }   
+
+    public int lengthOfLISRecur(int[] nums, int index, int prevIndex, int[][] dp) {
+        if(index >= nums.length) return 0;
+        if(dp[index][prevIndex+1] != 0) return dp[index][prevIndex+1];
+        if(prevIndex == -1 || nums[index] > nums[prevIndex]) {
+           dp[index][prevIndex+1] =  Math.max(lengthOfLISRecur(nums, index+1, index, dp) + 1, lengthOfLISRecur(nums, index+1, prevIndex,  dp));
+        } else {
+            dp[index][prevIndex+1] = lengthOfLISRecur(nums, index+1, prevIndex, dp);
+        }
+        return dp[index][prevIndex+1];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int[][] dp = new int[nums.length][nums.length+1];
+        return lengthOfLISRecur(nums, 0, -1, dp);
+    }
 }
