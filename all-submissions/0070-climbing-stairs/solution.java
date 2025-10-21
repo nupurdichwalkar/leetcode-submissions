@@ -1,19 +1,17 @@
 class Solution {
-    Map<Integer, Integer> memo = new HashMap<>();
 
-    public int climbStairs(int n) {
-        return dp(n);
+    public int climbStairsRecur(int n, int i, int[]dp) {
+        if(i == n) return 1;
+        if(i== n-1) return 1;
+        if(dp[i] != 0) return dp[i];
+        dp[i] =  climbStairsRecur(n, i+1, dp)  + climbStairsRecur(n, i+2, dp);
+        return dp[i];
+
     }
 
-    public int dp(int n) {
-        if (n == 0) return 0;
-        if(n == 1) return 1;
-        if (n == 2) return 2;
-        if (memo.containsKey(n)) {
-            return memo.get(n);
-        }
-        int answer = dp(n-2) + dp(n-1) ;
-        memo.put(n, answer);
-        return answer;
+    public int climbStairs(int n) {
+        int[] dp = new int[n];
+        return climbStairsRecur(n, 0, dp);
+
     }
 }
