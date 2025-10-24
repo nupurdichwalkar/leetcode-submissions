@@ -1,3 +1,7 @@
+
+
+import static java.lang.Math.max;
+
 /**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
@@ -28,31 +32,31 @@
  */
 class Solution {
 
+    public int getMaxDepth(List<NestedInteger> nestedList) {
+        int answer = 1;
+        for(NestedInteger nestedInteger: nestedList){
+            if(!nestedInteger.isInteger() && nestedInteger.getList().size()>0) {
+                answer = Math.max(answer, 1+ getMaxDepth(nestedInteger.getList()));
+            }
+        }
+        return answer;
+    }
+
     public int depthSumInverse(List<NestedInteger> nestedList) {
         int maxDepth = getMaxDepth(nestedList);
-        return weightedSum(nestedList, 1, maxDepth);
+        return dfs(nestedList, 0, maxDepth);
+        
     }
 
-    public int getMaxDepth(List<NestedInteger> nestedList){
-        int maxDepth = 1;
-       for(NestedInteger nestedInteger: nestedList) {
-        if(!nestedInteger.isInteger() && nestedInteger.getList().size() > 0) {
-            maxDepth = Math.max(maxDepth, getMaxDepth(nestedInteger.getList())+1);
-        }
-       }
-
-       return maxDepth;
-    }
-
-    public int weightedSum(List<NestedInteger> nestedList, int currDepth, int maxDepth) {
-        int finalSum = 0;
-        for(NestedInteger nestedInteger: nestedList) {
-            if (nestedInteger.isInteger()) {
-                finalSum += nestedInteger.getInteger() * (maxDepth - currDepth +1);
+    public int dfs(List<NestedInteger> nestedList,int currDepth, int maxDepth) {
+         int answer = 0;
+         for(NestedInteger nestedInteger: nestedList) {
+            if(nestedInteger.isInteger()) {
+                answer += nestedInteger.getInteger() * (maxDepth - currDepth);
             } else {
-                finalSum += weightedSum(nestedInteger.getList(), currDepth+1, maxDepth);      
+                answer += dfs(nestedInteger.getList(), currDepth+1, maxDepth);
             }
-       }
-       return finalSum;
+         }
+         return answer;
     }
 }
