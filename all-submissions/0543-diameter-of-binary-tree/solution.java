@@ -24,10 +24,10 @@ class Solution {
     }
 
     int maxDepth(TreeNode node) {
-        if(node == null) return -1;
+        if(node == null) return 0;
         int left = maxDepth(node.left);
         int right = maxDepth(node.right);
-        diameter = Math.max(diameter, left+right+2);
+        diameter = Math.max(diameter, left+right);
         return Math.max(left, right) +1;
     }
 }
