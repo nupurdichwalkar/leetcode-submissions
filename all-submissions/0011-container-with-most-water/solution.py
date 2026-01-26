@@ -7,10 +7,8 @@ class Solution:
             return 0
         while(left<right):
             minHeight = min(height[left], height[right])
-            print(left, right, minHeight)
             
             currArea = minHeight * (right- left)
-            print(currArea)
             maxArea = max(maxArea, currArea)
             if height[left] < height[right]:
                 left+=1
