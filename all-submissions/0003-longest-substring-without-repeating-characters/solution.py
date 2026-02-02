@@ -2,15 +2,19 @@ from collections import Counter
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        my_dict = Counter()
+        if s is None or len(s) == 0: return 0
+        if len(s) == 1: return 1
+        chars = {}
         left = 0
-        right = 0
-        res = 0
-        while right < len(s):
-            my_dict[s[right]] +=1
-            while my_dict[s[right]] > 1:
-                my_dict[s[left]] -= 1
-                left +=1
-            res = max(res, right - left + 1)
-            right += 1
-        return res
+        answer = 0
+        for right, c in enumerate(s):
+            chars[c] = chars.get(c,0) +1
+            if (chars[c] > 1):
+                while (left < right and chars[c] > 1):
+                    chars[s[left]] -=1
+                    if chars[s[left] ] == 0:
+                        del chars[s[left]]
+                    left +=1
+            answer = max(answer, right-left +1)
+        return answer
+
