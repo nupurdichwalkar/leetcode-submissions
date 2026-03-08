@@ -1,22 +1,32 @@
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        # create graph
-        def dfs(node):
-            for neighbor in graph[node]:
-                if neighbor not in seen:
-                    seen.add(neighbor)
-                    dfs(neighbor)
-        graph = defaultdict(list)
+        root = [i for i in range(len(isConnected))]
+        rank = [1] * len(isConnected)
+        count = len(isConnected)
+        def find(x):
+            if x != root[x]:
+                root[x] = find(root[x])
+            return root[x]
+
+        def union(x, y):
+            rootX = find(x)
+            rootY = find(y)
+            if rank[rootX] > rank[rootY]:
+                root[rootY] = rootX
+            elif rank[rootY] > rank[rootX]:
+                root[rootX] = rootY
+            else:
+                root[rootY] = rootX
+                rank[rootX] += 1
+            
+
+        def connected(x,y):
+            return find(x) == find(y)
+
         for i in range(len(isConnected)):
             for j in range(i+1, len(isConnected)):
-                if isConnected[i][j] == 1:
-                    graph[j].append(i)
-                    graph[i].append(j)
-        seen = set()
-        ans = 0
-        for i in range(len(isConnected)):
-            if i not in seen:
-                ans += 1
-                seen.add(i)
-                dfs(i)
-        return ans
+                if isConnected[i][j] == 1 and not connected(i, j):
+                    count -=1
+                    union(i, j)
+
+        return count
