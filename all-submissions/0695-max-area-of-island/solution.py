@@ -1,16 +1,29 @@
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        if not grid:
+            return 0
+        
+        queue = deque()
         visited = set()
         ROWS = len(grid)
         COLS = len(grid[0])
-        max_area = 0
-        def dfs(r, c):
-            if (0<=r<ROWS and 0<=c<COLS) and (r,c) not in visited and grid[r][c] == 1:
-                visited.add((r,c))
-                return 1 + dfs(r+1,c) + dfs(r-1,c) + dfs(r, c+1) + dfs(r, c-1)
-            return 0
-        for i in range(ROWS):
-            for j in range(COLS):
-                curr_area = dfs(i,j)
-                max_area = max(max_area, curr_area)
-        return max_area
+        maxArea = 0
+        directions = [(0,1),(1,0), (-1,0), (0,-1)]
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == 1 and not (r,c) in visited:
+                    visited.add((r,c))
+                    queue.append((r,c))
+                    currArea = 1
+                    while queue:
+                        row, col = queue.popleft()
+                        for dr, dc in directions:
+                            nr = row+dr
+                            nc = col+dc
+                            if 0<=nr<ROWS and 0<=nc<COLS and grid[nr][nc] == 1 and (nr, nc) not in visited:
+                                visited.add((nr, nc))
+                                currArea+=1
+                                queue.append((nr,nc))
+                    maxArea = max(maxArea, currArea)
+
+        return maxArea
