@@ -1,24 +1,34 @@
 class Solution:
     def checkValidString(self, s: str) -> bool:
-        dp = [[-1]*len(s) for _ in range(len(s))]
-        def isValid(currIndex, currCount):
-            if currIndex == len(s):
-                return currCount == 0
-            if dp[currIndex][currCount] != -1:
-                return dp[currIndex][currCount]==1
-            is_valid = False
-            if s[currIndex] == '*':
-                is_valid = is_valid or isValid(currIndex+1, currCount+1)
-                if currCount>0:
-                    is_valid = is_valid or isValid(currIndex+1, currCount-1)
-                is_valid = is_valid or isValid(currIndex+1, currCount)
-            elif s[currIndex] == '(':
-                is_valid = isValid(currIndex+1, currCount+1)
-            elif currCount >0:
-                is_valid = isValid(currIndex+1, currCount -1)
-            dp[currIndex][currCount] = 1 if is_valid else 0
-            return is_valid
+        left_stack = []
+        asterisk_stack = []
 
-        return isValid(0,0)
+        for i, ch in enumerate(s):
+            if ch == "(":
+                left_stack.append((ch, i))
+            elif ch == "*":
+                asterisk_stack.append((ch,i))
+            else:
+                if not left_stack and not asterisk_stack:
+                    return False
+                if left_stack:
+                    left_stack.pop()
+                elif asterisk_stack:
+                    asterisk_stack.pop()
+        
+        while left_stack and asterisk_stack:
+            left_index = left_stack[-1][1]
+            asterisk_index = asterisk_stack[-1][1]
+            if left_index > asterisk_index:
+                return False
+            left_stack.pop()
+            asterisk_stack.pop()
+        if not asterisk_stack and left_stack:
+            return False
+        # if not left_stack and 
+        #     return False
+        
+        return True
+            
 
             
