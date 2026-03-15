@@ -13,29 +13,25 @@ class Solution:
         while (l1 != None and l2 != None):
             sum = l1.val + l2.val + carry
             carry = sum //10
-            new_node = ListNode(sum %10)
-            temp.next = new_node
-            temp = new_node
+            temp.next =  ListNode(sum %10)
+            temp = temp.next
             l1 = l1.next
             l2 = l2.next
         while (l1 != None):
             sum = l1.val +carry
             carry = sum //10
-            new_node = ListNode(sum %10)
-            temp.next = new_node
-            temp = new_node
+            temp.next =  ListNode(sum %10)
+            temp = temp.next
             l1 = l1.next
         while (l2 != None):
             sum = l2.val +carry
             carry = sum //10
-            new_node = ListNode(sum %10)
-            temp.next = new_node
-            temp = new_node
+            temp.next =  ListNode(sum %10)
+            temp = temp.next
             l2 = l2.next
         if carry != 0:
-            new_node = ListNode(carry)
-            temp.next = new_node
-            temp = new_node
+            temp.next =  ListNode(carry)
+            temp = temp.next
 
         return dummy_head.next 
 		
