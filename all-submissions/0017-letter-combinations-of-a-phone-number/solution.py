@@ -16,7 +16,7 @@ class Solution:
                 return
             num = digits[curr_index]
             for c in map[num]:
-                curr_str += c
+                curr_str.append(c)
                 backtrack(curr_str, curr_index+1)
                 curr_str.pop()
         backtrack([], 0)
