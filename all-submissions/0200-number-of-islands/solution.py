@@ -1,23 +1,51 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        def isValid(row, col):
-            return 0<=row<len(grid) and 0<=col<len(grid[0]) and grid[row][col] == "1"
-	
-        def dfs(row, col):
-            if (isValid(row, col) and (row, col) not in seen):			
-                seen.add((row, col))
-                dfs(row+1, col)
-                dfs(row-1, col)
-                dfs(row, col+1)
-                dfs(row, col-1)
+        # visited = set()
+        # ROWS = len(grid)
+        # COLS = len(grid[0])
+
+        # def dfs(r, c):
+        #     if r < 0 or r >=ROWS or c <0 or c >= COLS:
+        #         return
+        #     if grid[r][c] == "1" and (r,c) not in visited:
+        #         visited.add((r,c))
+        #         dfs(r+1,c)
+        #         dfs(r-1,c)
+        #         dfs(r, c+1)
+        #         dfs(r, c-1)
+
+        # ans = 0
+        # for r in range(ROWS):
+        #     for c in range(COLS):
+        #         if grid[r][c] == "1" and (r,c) not in visited:
+        #             ans+=1
+        #             dfs(r, c)
+        # return ans
 
 
-        seen = set()
+
+        queue = deque()
+        visited = set()
+        ROWS = len(grid)
+        COLS = len(grid[0])
         ans = 0
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "1" and (i,j) not in seen:
-                    dfs(i, j)
-                    ans +=1
-        return ans
+        directions = [(1,0), (-1,0), (0,-1), (0,1)]
 
+        def isValid(r,c):
+            return 0<=r<ROWS and 0<=c<COLS and grid[r][c] == "1"
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == "1" and (r,c) not in visited:
+                    ans +=1
+                    queue.append((r,c))
+                    visited.add((r,c))
+                    while(queue):
+                        row, col = queue.popleft()
+                        for dr,dc in directions:
+                            nr = row + dr
+                            nc = col + dc
+                            if isValid(nr, nc) and (nr, nc) not in visited:
+                                queue.append((nr, nc))
+                                visited.add((nr, nc))
+        return ans
