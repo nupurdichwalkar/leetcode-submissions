@@ -1,14 +1,12 @@
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        left = 0
-        right = len(nums)
-        while left < right:
-            if nums[left] == val:
-                temp = nums[left]
-                nums[left] = nums[right-1]
-                nums[right-1] = temp
-                right -=1
+        swapIndex = -1
+        for i in range(len(nums)):
+            if nums[i] == val:
+                for j in range(i+1, len(nums)):
+                    if nums[j] != val:
+                        nums[i], nums[j] = nums[j], nums[i]
+                        swapIndex = i
             else:
-                left +=1
-        
-        return right
+                swapIndex += 1
+        return swapIndex+1
