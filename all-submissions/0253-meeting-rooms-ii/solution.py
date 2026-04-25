@@ -5,10 +5,7 @@ class Solution:
         intervals.sort(key = lambda x: x[0])
         minHeap = []
         heapq.heappush(minHeap, intervals[0][1])
-        used_rooms = 1
-        for i in range(1, len(intervals)):
-            s_time = intervals[i][0]
-            e_time = intervals[i][1]
+        for s_time,e_time in intervals[1:]:
             if s_time >= minHeap[0]:
                 heapq.heappop(minHeap)
             heapq.heappush(minHeap, e_time)
