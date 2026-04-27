@@ -1,17 +1,16 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
-        
         dp = {}
 
-        def dfs(currStep):
-            if currStep > n:
-                return 0
-            if currStep == n:
+        def dfs(i):
+            if i == n:
                 return 1
-            if currStep in dp:
-                return dp[currStep]
-            dp[currStep] = dfs(currStep+1) + dfs(currStep+2)
-            return dp[currStep]
+            if i> n:
+                return 0
+            if i in dp:
+                return dp[i]
+            dp[i] = dfs(i+1)+ dfs(i+2)
+            return dp[i]
         
         return dfs(0)
 
