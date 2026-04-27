@@ -1,18 +1,19 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        dp ={}
+        dp = {}
 
-        def dfs(index, currSum):
-            if index == len(nums)-1:
-                if currSum == target:
+        def dfs(index, curr_total):
+            if index == len(nums):
+                if curr_total == target:
                     return 1
                 else:
                     return 0
-            if (index, currSum) in dp:
-                return dp[(index, currSum)]
-            dp[(index, currSum)] = dfs(index+1, currSum - nums[index+1]) \
-                                    + dfs(index+1, currSum + nums[index+1])
-            return dp[(index, currSum)]
-        
-        # default_sum = nums[]
-        return dfs(0,nums[0]) + dfs(0, -nums[0])
+            if (index, curr_total) in dp:
+                return dp[(index, curr_total)]
+            
+            dp[(index, curr_total)] = dfs(index+1, curr_total + nums[index]) + \
+                                        dfs(index+1, curr_total - nums[index]) 
+            return dp[(index, curr_total)]
+
+        return dfs(0, 0)
+
