@@ -1,6 +1,6 @@
 class Solution:
     def minKnightMoves(self, x: int, y: int) -> int:
-        directions = [(2,1),(-2,1),(2,-1),(1,2),(1,-2),(-1,2)]
+        directions = [(2,1),(-2,1),(2,-1),(1,2),(1,-2),(-1,2),(-1,-2),(-2,-1)]
         x = abs(x)
         y = abs(y)
         if (x,y) == (0,0):
