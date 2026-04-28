@@ -7,10 +7,10 @@ class Solution:
             if num in visited:
                 continue
             curr_streak = 1
+            visited.add(num)
             while num+1 in nums_set:
                 visited.add(num)
                 num+=1
                 curr_streak +=1
-            visited.add(num)
             longest_streak = max(longest_streak, curr_streak)
         return longest_streak
